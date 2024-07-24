@@ -1,10 +1,15 @@
+package tests;
+
 import io.restassured.RestAssured;
+import models.CreateBodyRequestModel;
+import models.CreateBodyResponseModel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ApiTests {
 
@@ -30,21 +35,24 @@ public class ApiTests {
     }
 
     @Test
-    void postGreateTest() {
-        String name = "morpheus";
-        String job = "leader";
-        String requestBody = "{\"name\": \"" + name + "\", \"job\": \"" + job + "\"}";
-        given()
-                .log().all()
-                .body(requestBody)
-                .contentType(JSON)
-                .when()
-                .post("/users")
+    void postCreateTest() {
+
+        CreateBodyRequestModel requestBody = new CreateBodyRequestModel();
+        requestBody.setName("morpheus");
+        requestBody.setJob("leader");
+        CreateBodyResponseModel response =
+                given()
+                        .log().all()
+                        .body(requestBody)
+                        .contentType(JSON)
+                 .when()
+                        .post("/users")
                 .then()
-                .log().all()
-                .statusCode(201)
-                .body("job", is(job))
-                .body("name", is(name));
+                        .log().all()
+                        .statusCode(201)
+                        .extract().as(CreateBodyResponseModel.class);
+        assertEquals(requestBody.getJob(), response.getJob());
+        assertEquals(requestBody.getName(), response.getName());
     }
 
     @Test
@@ -92,5 +100,6 @@ public class ApiTests {
                 .statusCode(400)
                 .body("error", is("Missing password"));
     }
+
 
 }
