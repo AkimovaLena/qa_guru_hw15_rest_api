@@ -5,10 +5,9 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CreateBodyResponseModel {
+public class UpdateBodyResponseModel {
     String name, job;
-    int id;
-    Date createdAt;
+    Date updatedAt;
 
 
 }

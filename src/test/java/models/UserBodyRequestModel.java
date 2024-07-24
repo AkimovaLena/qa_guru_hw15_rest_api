@@ -3,7 +3,7 @@ package models;
 import lombok.Data;
 
 @Data
-public class CreateBodyRequestModel {
+public class UserBodyRequestModel {
     String name, job;
 
 
